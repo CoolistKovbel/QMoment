@@ -1,5 +1,6 @@
 import React from 'react'
-import { logout } from '../lib/action'
+import { logout } from '../lib/actions'
+
 
 
 const LogoutButton = () => {

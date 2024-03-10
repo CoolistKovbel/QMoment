@@ -7,6 +7,7 @@ import dbConnect from "./db";
 import { User } from "../models/User";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { hash } from "bcryptjs";
 
 export const getSession = async () => {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
@@ -30,6 +31,8 @@ export const login = async (state: "error wrong credentials" | "success" | "erro
     // Check user in db
     const existingUser = await User.findOne({ email });
 
+    console.log(password)
+
     if (!existingUser) {
       return "error wrong credentials";
     }
@@ -52,8 +55,41 @@ export const login = async (state: "error wrong credentials" | "success" | "erro
   }
 };
 
+export const Registrar = async (
+  state: string | undefined,
+  formData: FormData
+) => {
+  try {
+    const { username, email, password, metaAddress, sig } =
+      Object.fromEntries(formData);
 
+    await dbConnect();
 
+    const UsrExist = await User.findOne({ username });
+
+    if (UsrExist) {
+      return "there is a user";
+    }
+
+    const P$P = await hash(password as string, 10);
+
+    const newUser = new User({
+      username,
+      password: P$P,
+      email,
+      metaAddress: metaAddress as string | null,
+      sig: sig as string | null,
+    });
+
+    await newUser.save();
+
+    return "Authentication success";
+  } catch (error) {
+    console.log(error);
+
+    return "notnoice";
+  }
+};
 
 export const logout = async () => {
   const session = await getSession();

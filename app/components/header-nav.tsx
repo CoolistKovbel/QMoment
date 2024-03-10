@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { SessionData } from "../lib/forge";
+import { SessionData } from "../lib/dictionary";
 import LogoutButton from "./logoutbutton";
 
 interface HeaderNavProps {
@@ -16,30 +16,36 @@ const HeaderNav = ({user}:HeaderNavProps) => {
   console.log(user, "in the header")
 
   return (
-    <header className="flex items-center justify-between bg-[#999] text-black p-2">
+    <header className="flex items-center justify-between w-full bg-[#999] text-black p-2">
+      
       <h1 className="flex items-center">
+
         <Image
-          src="/moon.png"
+          src="/bbS.png"
           alt="she knows it"
           width={32}
           height={32}
           className="mr-2"
         />
+
         <Link href="/dashboard" className="font-bold">
-          LunarCrypticStation
+          de AI
         </Link>
+
       </h1>
 
       <nav className="w-[220px] flex items-center gap-2 text-sm">
+       
         <Link
           href="/about"
-          className="p-2 bg-[#111] text-white hover:text-black hover:bg-[#f4f4f4]  font-bold rounded-md"
+          className="p-1 bg-[#111] text-white hover:text-black hover:bg-[#f4f4f4]  font-bold rounded-md"
         >
           About
         </Link>
+
         <Link
           href="/contact"
-          className="p-2 bg-[#111] text-white hover:text-black hover:bg-[#f4f4f4] font-bold  rounded-md "
+          className="p-1 bg-[#111] text-white hover:text-black hover:bg-[#f4f4f4] font-bold  rounded-md "
         >
           Contact
         </Link>
@@ -47,7 +53,7 @@ const HeaderNav = ({user}:HeaderNavProps) => {
         <div className="relative inline-block">
 
           <button
-            className="p-2 bg-[#111] text-white hover:text-black hover:bg-[#f4f4f4] font-bold  rounded-md"
+            className="p-1 bg-[#111] text-white hover:text-black hover:bg-[#f4f4f4] font-bold  rounded-md"
             onClick={() => setDropdownOpen((prev) => !prev)}
           >
             Account
@@ -82,10 +88,12 @@ const HeaderNav = ({user}:HeaderNavProps) => {
                   </a>
 
                   <LogoutButton />
+
                 </div>
             </div>
           )}
         </div>
+
       </nav>
       
     </header>

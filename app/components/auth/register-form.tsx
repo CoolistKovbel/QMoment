@@ -1,14 +1,15 @@
 "use client";
- 
+
 import React, { useEffect } from "react";
-import { RegisterUser } from "@/app/lib/action";
+
 import { useRouter } from "next/navigation";
 import { useFormState } from "react-dom";
+import { Registrar } from "@/app/lib/actions";
 
 const RegisterForm = () => {
   const router = useRouter();
 
-  const [state, dispatch] = useFormState(RegisterUser, undefined);
+  const [state, dispatch] = useFormState(Registrar, undefined);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -77,11 +78,10 @@ const RegisterForm = () => {
           name="preference"
           className="w-full px-4 py-2 rounded-md border border-gray-600 focus:outline-none focus:border-blue-400 text-black"
         >
-          <option value="frontend">Frontend Development</option>
-          <option value="backend">Backend Development</option>
-          <option value="blockchain">Blockchain</option>
-          <option value="ui">UI Design</option>
-          <option value="fullStack">Full Stack</option>
+          <option value="coding">Coding</option>
+          <option value="programming">Programming</option>
+          <option value="design">Design</option>
+          <option value="marketing">marketing</option>
         </select>
       </div>
 
@@ -91,7 +91,6 @@ const RegisterForm = () => {
       >
         Register
       </button>
-
 
       {state && (
         <>
