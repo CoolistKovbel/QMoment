@@ -22,7 +22,7 @@ const UserProfileCard = ({user}: ProfileCardProps) => {
         <div>
           <h2 className="text-xl font-bold">{user.username}</h2>
           <p className="text-gray-500">{user.email}</p>
-          <p className="text-gray-500">{user.metaAccount.substring(0, 7)}</p>
+         {user.metaAccount && <p className="text-gray-500">{user.metaAccount.substring(0, 7)}</p>}
         </div>
       </div>
 
