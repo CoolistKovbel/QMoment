@@ -6,8 +6,10 @@ export interface SessionData {
     image?: string;
     isPro?: boolean;
     isLoggedIn?: boolean;
+    metaAccount?: string;
     role?: string;
-}
+    email?: string;
+  }
 
 export const defaultSession:SessionData =  {
     isLoggedIn: false
@@ -20,4 +22,4 @@ export const sessionOptions: SessionOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV  === "production"
     }
-} 
+}  

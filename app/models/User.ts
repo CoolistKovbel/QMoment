@@ -1,13 +1,19 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
+import { BotDocument } from "./Bot";
 
 interface IUser {
   username: string;
   email: string;
   password: string;
-  preference: string;
   image: string;
   role: string;
   isPro: boolean;
+  metaAddress: string;
+  membership: boolean;
+  tokens: String;
+  count: String;
+  signature: string;
+  mainBot: Types.ObjectId | BotDocument;
 }
 
 // TODO: Make it better......
@@ -18,33 +24,47 @@ const UserSchema = new mongoose.Schema<IUser>(
       type: String,
       min: 4,
       max: 24,
-      require: true,
-      unique: true
+      required: true,
+      unique: true,
     },
     email: {
       type: String,
-      require: true,
-      unique: true
+      required: true,
+      unique: true,
     },
     password: {
       type: String,
-      require: true,
+      required: true,
     },
-    preference: {
+    membership: {
+      type: Boolean,
+      default: false
+    },
+    tokens: {
       type: String,
-      require: true,
+      default: "12"
+    },
+    count: {
+      type: String,
+      default: "24"
     },
     image: {
       type: String,
     },
+    metaAddress: {
+      type: String,
+    },
+    signature: {
+      type: String,
+    },
+    mainBot: {
+      type: Schema.Types.ObjectId,
+      ref: "Bot",
+    },
     role: {
       type: String,
       default: "USER",
-      enum: ["USER", "ADMIN", "CAPTAIN"]
-    },
-    isPro: {
-      type: Boolean,
-      default: false,
+      enum: ["USER", "ADMIN", "CAPTAIN"],
     },
   },
   { timestamps: true }

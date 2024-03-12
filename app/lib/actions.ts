@@ -4,10 +4,15 @@ import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData, defaultSession } from "../lib/dictionary";
 import { cookies } from "next/headers";
 import dbConnect from "./db";
-import { User } from "../models/User";
+
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { hash } from "bcryptjs";
+import { User } from "../models/User";
+import { SendContactEmail } from "./schema";
+import { sendMail } from "./mail";
+import { writeFile } from "fs/promises";
+import { getUserProfile } from "./User";
 
 export const getSession = async () => {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
@@ -40,6 +45,7 @@ export const login = async (state: "error wrong credentials" | "success" | "erro
     console.log(existingUser);
     session.userId = existingUser._id.toString();
     session.username = existingUser.username;
+    session.email = existingUser.email;
     session.isPro = existingUser.isPro;
     session.role = existingUser.role;
     session.isLoggedIn = true;
@@ -97,6 +103,38 @@ export const logout = async () => {
   redirect("/");
 };
 
+export async function ContactEmail(
+  id: string,
+  prevState: string | object | undefined,
+  formData: FormData
+) {
+  try {
+    const data = Object.fromEntries(formData.entries());
+
+    const validatedFields = SendContactEmail.safeParse(data);
+
+    if (!validatedFields.success) {
+      return {
+        message: "seemed to have not worked properly, try again.",
+      };
+    }
+
+    const { to, name, subject, content } = validatedFields.data;
+
+    await sendMail({
+      to: process.env.SMTP_EMAIL as string,
+      name: name, // get user name
+      subject,
+      content,
+    });
+
+    return { message: "i am dead" };
+  } catch (error) {
+    console.log(error);
+    return { message: "I am sorry but the request failed.... you got denied" };
+  }
+}
+
 export const changePremium = async (
   id: string,
   prevState: string | object | undefined,
@@ -129,3 +167,95 @@ export const changePremium = async (
     return { error: "An error occurred" };
   }
 };
+
+export const handleUserUpdate = async (
+  id: string | undefined,
+  prevState: string | object | undefined,
+  formData: FormData
+) => {
+  try {
+    await dbConnect();
+
+    const user = await getUserProfile(id as string);
+    const sessionUser = await getSession();
+
+    const imageBan = formData.get("image") as File || null;
+
+    let rest;
+
+    console.log(JSON.stringify(user)) 
+
+    const { username, password, metaAccount, email ,  } =
+      Object.fromEntries(formData);
+ 
+    const updateFields: Record<string, any> = {};
+
+    if (username && username !== sessionUser.username) {
+      sessionUser.username = username as string;
+      updateFields.username = username;
+    }
+
+    if (email && email !== sessionUser.email) {
+      sessionUser.email = email as string;
+      updateFields.email = email;
+    }
+
+    if (metaAccount && metaAccount !== sessionUser.metaAccount) {
+      sessionUser.metaAccount = metaAccount as string;
+      updateFields.metaAddress = metaAccount;
+    }
+
+
+
+    console.log("imagebanner", imageBan.size)
+
+    if (imageBan.size !== 0 ) {
+      console.log("There is an image");
+
+      // 69 - create buffer
+      const fileBuffer = await (imageBan as File).arrayBuffer();
+      const buffer = Buffer.from(fileBuffer);
+      // set path
+      const path = `${process.cwd()}/public/profileImage/${
+        crypto.randomUUID() + imageBan.name
+      }`;
+
+      // Write image
+      await writeFile(path, buffer);
+      rest = path.split(`${process.cwd()}/public`)[1];
+      
+      sessionUser.image = rest;
+      updateFields.image = rest;
+    }
+
+    let newPassword;
+
+    if (password && password !== "") {
+      newPassword = await hash(password as string, 10);
+      updateFields.password = newPassword;
+    }
+
+    updateFields.updatedAt = new Date();
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id as string,
+      updateFields,
+      {
+        new: true, // Return the modified document rather than the original
+        runValidators: true, // Run model validations on update
+      }
+    );
+
+    console.log(updatedUser);
+
+    await sessionUser.save();
+
+    revalidatePath(`/homepage/profile/${id}`);
+
+    return "success";
+  } catch (error) {
+    console.log(error);
+    return "seems like there was an error updating user";
+  }
+};
+

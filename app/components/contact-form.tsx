@@ -1,7 +1,7 @@
 "use client";
 
-import { ContactEmail } from "@/app/lib/action";
 import { useFormState } from "react-dom";
+import { ContactEmail } from "../lib/actions";
 
 
 interface ContactFormProps {
@@ -23,6 +23,7 @@ const ContactForm = ({userId}: ContactFormProps) => {
 
     } catch (error) {
       console.error("Error:", error);
+      
     } finally {
         e.currentTarget.reset();
     }
@@ -30,6 +31,7 @@ const ContactForm = ({userId}: ContactFormProps) => {
 
   return (
     <form className="mb-8" onSubmit={send}>
+
       <div className="mb-4">
         <label htmlFor="name" className="block text-gray-400 text-sm mb-2 ">
           Name:
