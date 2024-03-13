@@ -1,9 +1,8 @@
 import RegisterForm from "@/app/components/auth/register-form";
 import Link from "next/link";
- 
+
 const Page = () => {
   return (
-
     <div className="max-w-[500px] w-full mx-auto p-8 rounded-lg border-2 border-gray-800 shadow-lg">
       <h2 className="text-3xl md:text-5xl font-bold mb-6">Register</h2>
 
@@ -27,8 +26,6 @@ const Page = () => {
           </p>
         </div>
       </div>
-
-      
     </div>
   );
 };

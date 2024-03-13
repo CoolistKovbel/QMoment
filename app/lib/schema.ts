@@ -9,7 +9,7 @@ export const UserRegisterSchema = z.object({
   email: z.string().email(),
   username: z.string().max(12, { message: "please dont just write random letters...." }),
   password: z.string().min(1, {message: "dont leave it blank"}),
-  preference: z.string().min(1, {message: "dont leave it blank"}),
+  experties: z.string().min(1, {message: "dont leave it blank"}),
 });
 
 /**

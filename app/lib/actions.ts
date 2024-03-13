@@ -24,7 +24,10 @@ export const getSession = async () => {
   return session;
 };
 
-export const login = async (state: "error wrong credentials" | "success" | "error" | undefined, formData: FormData) => {
+export const login = async (
+  state: "error wrong credentials" | "success" | "error" | undefined,
+  formData: FormData
+) => {
   const session = await getSession();
 
   const email = formData.get("email") as string;
@@ -36,7 +39,7 @@ export const login = async (state: "error wrong credentials" | "success" | "erro
     // Check user in db
     const existingUser = await User.findOne({ email });
 
-    console.log(password)
+    console.log(password);
 
     if (!existingUser) {
       return "error wrong credentials";
@@ -179,16 +182,15 @@ export const handleUserUpdate = async (
     const user = await getUserProfile(id as string);
     const sessionUser = await getSession();
 
-    const imageBan = formData.get("image") as File || null;
+    const { username, password, metaAccount, email } =
+      Object.fromEntries(formData);
+
+    const updateFields: Record<string, any> = {};
+
+    const imageBan = (formData.get("image") as File) || null;
 
     let rest;
 
-    console.log(JSON.stringify(user)) 
-
-    const { username, password, metaAccount, email ,  } =
-      Object.fromEntries(formData);
- 
-    const updateFields: Record<string, any> = {};
 
     if (username && username !== sessionUser.username) {
       sessionUser.username = username as string;
@@ -205,11 +207,7 @@ export const handleUserUpdate = async (
       updateFields.metaAddress = metaAccount;
     }
 
-
-
-    console.log("imagebanner", imageBan.size)
-
-    if (imageBan.size !== 0 ) {
+    if (imageBan !== null && imageBan.size !== 0) {
       console.log("There is an image");
 
       // 69 - create buffer
@@ -223,7 +221,7 @@ export const handleUserUpdate = async (
       // Write image
       await writeFile(path, buffer);
       rest = path.split(`${process.cwd()}/public`)[1];
-      
+
       sessionUser.image = rest;
       updateFields.image = rest;
     }
@@ -258,4 +256,3 @@ export const handleUserUpdate = async (
     return "seems like there was an error updating user";
   }
 };
-

@@ -29,6 +29,7 @@ const RegisterForm = () => {
 
   return (
     <form className="mb-8 w-full" onSubmit={handleSubmit}>
+      
       <div className="mb-4">
         <label htmlFor="username" className="block text-gray-400 text-sm mb-2">
           Username:
@@ -71,11 +72,11 @@ const RegisterForm = () => {
           htmlFor="preference"
           className="block text-gray-400 text-sm mb-2"
         >
-          Choose your preference:
+          Choose Bot experties:
         </label>
         <select
-          id="preference"
-          name="preference"
+          id="experties"
+          name="experties"
           className="w-full px-4 py-2 rounded-md border border-gray-600 focus:outline-none focus:border-blue-400 text-black"
         >
           <option value="coding">Coding</option>

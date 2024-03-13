@@ -22,8 +22,11 @@ const Page = () => {
     <div className="w-full min-h-screen p-2">
       <div>
         <section>
+
           <header>
-            <header>Bile</header>
+            <header>
+              <h2 className="text-2xl font-bold">Slow beans</h2>
+            </header>
           </header>
 
           <article>
@@ -53,8 +56,8 @@ const Page = () => {
 
             <div>
               <form>
-                <input type="text" placeholder="heart hurts little bit?" />
-                <button></button>
+                <input type="text" className="p-3 bg-[#222]" placeholder="heart hurts little bit?" />
+                <button className="bg-[#222] p-3">enter</button>
               </form>
             </div>
 
