@@ -191,7 +191,6 @@ export const handleUserUpdate = async (
 
     let rest;
 
-
     if (username && username !== sessionUser.username) {
       sessionUser.username = username as string;
       updateFields.username = username;
@@ -254,5 +253,21 @@ export const handleUserUpdate = async (
   } catch (error) {
     console.log(error);
     return "seems like there was an error updating user";
+  }
+};
+
+export const handleUserComms = async (
+  prevState: string | object | undefined,
+  formData: FormData
+) => {
+  try {
+
+    console.log(formData)
+    
+    return 'success'
+
+  } catch (error) {
+    console.log(error);
+    return "error"
   }
 };

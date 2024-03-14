@@ -35,7 +35,7 @@ const EditMemberForm = ({ user }: EditMemberFormProps) => {
   };
 
   return (
-    <form className="mb-8 w-full relative" onSubmit={handleClick}>
+    <form className="mb-8 w-full relative p-5" onSubmit={handleClick}>
       <div className="w-[200px] h-full flex flex-col gap-5">
         <label htmlFor="username">
           <span className="text-md  font-bold inline-block my-2 uppercase">

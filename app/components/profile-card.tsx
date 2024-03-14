@@ -9,16 +9,22 @@ interface ProfileCardProps {
 const UserProfileCard = ({user}: ProfileCardProps) => {
 
 
+
+  console.log(user)
+
   return (
     <div className="max-w-[400px] bg-white rounded-md shadow-md p-6 text-black">
-      <div className="mb-4 flex items-center">
-        <Image
-          src={user.image || 'https://placekitten.com/150/150'}
-          alt="User Profile"
-          width={150}
-          height={150}
-          className="rounded-full object-cover mr-4"
-        />
+      <div className="mb-4 flex items-center justify-center  h-full w-full">
+       
+        <div className='w-[150px] h-[150px] relative rounded-full object-cover mr-4'>
+          <Image
+            src={user.image || 'https://placekitten.com/150/150'}
+            alt="User Profile"
+            fill
+          />
+
+        </div>
+
         <div>
           <h2 className="text-xl font-bold">{user.username}</h2>
           <p className="text-gray-500">{user.email}</p>
