@@ -24,7 +24,7 @@ const CompButton = () => {
   };
 
   return (
-    <div className="w-[40%] flex items-center justify-between mx-auto pb-5">
+    <div className="w-[80%] flex items-center justify-between mx-auto pb-5">
       <button
         onClick={handleClickPro}
         className="bg-[#222] p-3 rounded-md font-bold drop-shadow-lg hover:bg-[#333]"

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import GetProModel from "../models/GetProModel";
 import GetNFTModel from "../models/GetNFTModel";
+import CreateAiModel from "../models/CreateAIModel";
 
 export const ModalProvider = () => {
   const [isMounted, setIsmounted] = useState(false);
@@ -19,6 +20,7 @@ export const ModalProvider = () => {
     <>
       <GetProModel />
       <GetNFTModel />
+      <CreateAiModel />
     </>
   );
 };

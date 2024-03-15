@@ -11,21 +11,27 @@ const Page = async () => {
 
   return (
     <main className="w-full min-h-screen p-2 flex items-center justify-center relative">
-      <div className="w-[800px] h-[720px] mx-auto p-4 bg-[#222] relative rounded-md">
-        <div className="w-full flex gap-2">
+
+      <div className="w-[800px] h-[fit] mx-auto p-4 bg-[#222] relative rounded-md">
+        
+        <div className="w-full flex gap-2 flex flex-col md:flex-row">
+
           <UserProfileCard user={session} />
 
           {isPro ? (
-            <div className="bg-[#231] w-[70%] rounded-md shadow-bg-lg border-[1px]">
+            <div className="bg-[#231] w-[100%] md:w-[70%] rounded-md shadow-bg-lg border-[1px]">
+              
               <h2 className="p-2 bg-[#222] text-white font-bold">pro?</h2>
 
               <p>
                 get pro today, save on the amount of tokens you have to use and
                 use it for something else instead.
               </p>
+
             </div>
           ) : (
-            <div className="bg-[#231] w-[70%] rounded-md shadow-bg-lg border-[1px]">
+            <div className="bg-[#231] w-[100%] md:w-[70%] rounded-md shadow-bg-lg border-[1px]">
+
               <h2 className="p-2 bg-[#222] text-white font-bold">
                 pro? Get pro today
               </h2>
@@ -46,11 +52,9 @@ const Page = async () => {
           )}
         </div>
 
-        {/* <h2>email:{session.email}</h2>
-        <h2>tokens:{session.token}</h2> */}
-
         <EditMemberForm user={session.userId} />
       </div>
+
     </main>
   );
 };

@@ -1,7 +1,7 @@
 
 import { create } from "zustand";
 
-export type ModalType = "getPro" | "getNFT" 
+export type ModalType = "getPro" | "getNFT" | "createAI"
 
 interface ModalData {
   server?: any;

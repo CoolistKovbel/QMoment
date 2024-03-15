@@ -13,7 +13,7 @@ const UserProfileCard = ({user}: ProfileCardProps) => {
   console.log(user)
 
   return (
-    <div className="max-w-[400px] bg-white rounded-md shadow-md p-6 text-black">
+    <div className="w-[100%] md:w-[70%]  bg-white rounded-md shadow-md p-6 text-black">
       <div className="mb-4 flex items-center justify-center  h-full w-full">
        
         <div className='w-[150px] h-[150px] relative rounded-full object-cover mr-4'>

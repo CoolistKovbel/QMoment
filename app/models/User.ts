@@ -17,6 +17,7 @@ interface IUser {
 }
 
 // TODO: Make it better......
+export interface UserDocument extends IUser, Document {}
 
 const UserSchema = new mongoose.Schema<IUser>(
   {

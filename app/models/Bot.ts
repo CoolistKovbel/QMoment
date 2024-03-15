@@ -2,6 +2,7 @@ import mongoose, { Document, Schema, Types } from "mongoose";
 
 import { BotBabyDocument } from "./BotBaby";
 import { BotSearchDocument } from "./Searchforge";
+import { UserDocument } from "./User";
 
 interface IBot {
   name: string;
@@ -9,6 +10,8 @@ interface IBot {
   image: string;
   botSession: Types.ObjectId[] | BotBabyDocument[];
   forgeSearch: Types.ObjectId[] | BotSearchDocument[];
+  botParent: Types.ObjectId | UserDocument;
+  modifier: any; // TODO: CONNECT
 }
 
 export interface BotDocument extends IBot, Document {}
@@ -33,12 +36,20 @@ const BotSchema: Schema<BotDocument> = new Schema(
         ref: "BotBaby",
       },
     ],
+    botParent: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     forgeSearch: [
       {
         type: Schema.Types.ObjectId,
         ref: "BotForgeSearch",
       },
     ],
+    // TODO: NFT string?
+    modifier: {
+      type: String
+    }
   },
   { timestamps: true }
 );

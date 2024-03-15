@@ -13,6 +13,7 @@ import { SendContactEmail } from "./schema";
 import { sendMail } from "./mail";
 import { writeFile } from "fs/promises";
 import { getUserProfile } from "./User";
+import { Bot } from "../models/Bot";
 
 export const getSession = async () => {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
@@ -46,11 +47,16 @@ export const login = async (
     }
 
     console.log(existingUser);
+
     session.userId = existingUser._id.toString();
     session.username = existingUser.username;
     session.email = existingUser.email;
     session.isPro = existingUser.isPro;
     session.role = existingUser.role;
+
+    session.tokens = existingUser.tokens as string;
+    session.count = existingUser.count as string;
+
     session.isLoggedIn = true;
 
     await session.save();
@@ -261,13 +267,53 @@ export const handleUserComms = async (
   formData: FormData
 ) => {
   try {
+    await dbConnect();
+    const user = await getSession();
+    let imagepath;
 
-    console.log(formData)
-    
-    return 'success'
+    const { botName, botPurpose, ImageName } = Object.fromEntries(formData);
 
+    // Check if ImageName is a File object
+    if (ImageName instanceof File && ImageName.size > 0) {
+      const fileBuffer = await ImageName.arrayBuffer();
+      const buffer = Buffer.from(fileBuffer);
+
+      const path = `${process.cwd()}/public/botImages/${crypto.randomUUID() + ImageName.name}`;
+
+      await writeFile(path, buffer);
+
+      const rest = path.split(`${process.cwd()}/public`)[1];
+
+      imagepath = rest;
+    }
+
+    const payload = {
+      name: botName,
+      mainPurpose: botPurpose,
+      image: imagepath || null,
+      botParent: user.userId,
+    };
+
+    const newBot = new Bot(payload);
+
+    await newBot.save();
+
+    return "success";
   } catch (error) {
     console.log(error);
-    return "error"
+    return "error";
+  }
+};
+
+
+export const handleAiRegisterForm = async (
+  prevState: string | object | undefined,
+  formData: FormData
+) => {
+  try {
+    return "success";
+  } catch (error) {
+    console.log(error);
+    return "error";
   }
 };

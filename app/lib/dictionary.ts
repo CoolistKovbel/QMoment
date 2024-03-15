@@ -9,6 +9,8 @@ export interface SessionData {
     metaAccount?: string;
     role?: string;
     email?: string;
+    tokens?: string;
+    count?: string;
   }
 
 export const defaultSession:SessionData =  {
