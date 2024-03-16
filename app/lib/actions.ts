@@ -14,6 +14,7 @@ import { sendMail } from "./mail";
 import { writeFile } from "fs/promises";
 import { getUserProfile } from "./User";
 import { Bot } from "../models/Bot";
+import { Conversation } from "../models/Conversation";
 
 export const getSession = async () => {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
@@ -278,7 +279,9 @@ export const handleUserComms = async (
       const fileBuffer = await ImageName.arrayBuffer();
       const buffer = Buffer.from(fileBuffer);
 
-      const path = `${process.cwd()}/public/botImages/${crypto.randomUUID() + ImageName.name}`;
+      const path = `${process.cwd()}/public/botImages/${
+        crypto.randomUUID() + ImageName.name
+      }`;
 
       await writeFile(path, buffer);
 
@@ -305,12 +308,43 @@ export const handleUserComms = async (
   }
 };
 
+export const handleUserComments = async (
+  prevState: string | object | undefined,
+  formData: FormData
+) => {
+  try {
+    await dbConnect();
+    const user = await getSession();
+
+    const { urbanText, botId } = Object.fromEntries(formData);
+
+    const payload = {
+      question: urbanText,
+      to: botId,
+      from: user.userId,
+      answer:
+        "Biltong chop boudin short loin, flank chislic corned beef venison andouille. Tongue pastrami leberkas kevin, venison sausage hamburger chicken meatball doner tenderloin buffalo bacon shoulder swine. Beef ribs corned beef tongue tail venison beef pork belly ham hock doner bacon tenderloin t-bone. Corned beef strip steak sirloin, pork loin turkey burgdoggen kevin boudin alcatra venison. Tail kielbasa sausage, shoulder meatball ham hock spare ribs pork loin hamburger bresaola tri-tip. Capicola kevin shoulder tail, leberkas andouille flank frankfurter. Jowl prosciutto beef porchetta, flank boudin turkey.",
+    };
+
+    const newBot = new Conversation(payload);
+
+    await newBot.save();
+
+    return "success";
+  } catch (error) {
+    console.log(error);
+    return "error";
+  }
+};
 
 export const handleAiRegisterForm = async (
   prevState: string | object | undefined,
   formData: FormData
 ) => {
   try {
+
+
+    
     return "success";
   } catch (error) {
     console.log(error);

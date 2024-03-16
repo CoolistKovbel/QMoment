@@ -1,8 +1,8 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface IConversation {
-  to: string;
-  from: string;
+  to: any;
+  from: any;
   question: string;
   answer: string;
 }
@@ -11,13 +11,15 @@ export interface ConversationDocument extends IConversation, Document {}
 
 const ConversationSchema: Schema<ConversationDocument> = new Schema(
   {
+    // user
     to: {
-      type: String,
-      required: true,
+      type: Schema.Types.ObjectId,
+      ref: "BotBaby",
     },
-    from: {
-      type: String,
-      required: true,
+    // 
+    from:  {
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
     question: {
       type: String,

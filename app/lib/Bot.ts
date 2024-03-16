@@ -21,10 +21,7 @@ export const getUserProfile = async (userId: string) => {
 export const getUserBot = async (userId: string) => {
   try {
     await dbConnect();
-    const userBot = await Bot.find({ _id: userId });
-
-    console.log(userBot, "in the profile");
-
+    const userBot = await Bot.find({ botParent: userId });
     return userBot;
   } catch (error) {
     console.log(error);
